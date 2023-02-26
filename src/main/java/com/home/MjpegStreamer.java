@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
-
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -27,11 +26,12 @@ public class MjpegStreamer
         if (params.get("port") != null) {
             port = Integer.valueOf(params.get("port"));
         }
-
-        String file = "G:\\MyTemp\\camera.jpg";;
+        String file = "G:\\MyTemp\\camera.jpg";
         if (params.get("file") != null) {
             file = params.get("file");
         }
+        System.out.println("\r\nstart...");
+        System.out.println(String.format("port=%s, file=%s", port, file));
         //imageSource = new Source();
         imageSource = new SourceFile(file);
         HttpServer server = HttpServer.create(new InetSocketAddress(port),0);
@@ -67,6 +67,7 @@ public class MjpegStreamer
         @Override
         public void handle(HttpExchange t) throws IOException
         {
+            System.out.println("handle...");
             Headers h = t.getResponseHeaders();
             h.set("Cache-Control", "no-cache, private");
             h.set("Content-Type", "multipart/x-mixed-replace;boundary=" + BOUNDARY);
